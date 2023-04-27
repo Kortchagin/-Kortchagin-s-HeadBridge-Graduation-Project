@@ -1,0 +1,143 @@
+openapi: 3.0.0
+info:
+  title: Питание детей
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080/api/v1/
+    description: Dev server
+security:
+  - api_key: []
+paths:
+  /foods:
+    get: 
+      summary: Метод получения списка продуктов
+      tags:
+        - Блюда, продукты
+      operationId: getAllFoods
+      responses:
+        '200':
+          description: Успешный ответ со списком продуктов
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Foods"
+        'default':
+          description: Всё нестандартное
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /food:  
+    post:
+      summary: Метод создания продукта
+      tags: 
+        - Блюда, продукты
+      operationId: createFood
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Food"
+      responses:
+        '200':
+          description: Успешный ответ с одним продуктом
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Food"
+        'default':
+          description: Всё нестандартное
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /food/{food_id}:
+     get: 
+      summary: Метод получения продукта по идентификатору
+      tags:
+        - Блюда, продукты
+      operationId: getFoodById
+      parameters:
+        - name: food_id
+          in: path
+          required: true
+          description: Идентификатор продукта
+          schema:
+            type: string
+          example: 34d4646a-edb3-4277-83d0-87b7fd472ebd
+      responses:
+        '200':
+          description: Успешный ответ с одним продуктом
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Food"
+        'default':
+          description: Всё нестандартное
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+     delete:
+       summary: Метод удаления продукта по идентификатору
+       tags:
+         - Блюда, продукты
+       operationId: deleteFoodById
+       parameters:
+        - name: food_id
+          in: path
+          required: true
+          description: Идентификатор продукта
+          schema:
+            type: string
+          example: 34d4646a-edb3-4277-83d0-87b7fd472ebd
+       responses:
+        '200':
+          description: Успешное удаление продукта
+          content:
+            application/json: {}
+        'default':
+          description: Всё нестандартное
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Food:
+      type: object
+      required:
+        - food_name
+        - food_features
+      properties:
+        food_id:
+          type: string
+          example: d64fc93b-4055-4734-aad8-9b141502235f
+        food_name:
+          type: string
+          example: Tomato
+        food_features:
+          type: string
+          example: red
+    Foods:
+      type: array
+      items:
+        $ref: "#/components/schemas/Food"
+    Error:
+      type: object
+      required:
+        - code
+        - error_message
+      properties:
+        code:
+          type: integer
+        error_message:
+          type: string
+  securitySchemes:
+    api_key:
+        type: apiKey
+        description: API ключ для авторизации запросов. Если у Вас нет API ключа, используйте `fd4698c940c6d1da602a70ac34f0b147`.
+        name: api_key
+        in: query
+          
