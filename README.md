@@ -1,1 +1,2 @@
-# -Kortchagin-s-HeadBridge-Graduation-Project
+# HeadBridge-Graduation-Project
+Course "System analyst" March - May 2023
